@@ -401,6 +401,27 @@ h1{font-size:clamp(1.35rem,3vw,1.8rem);line-height:1.2}
 
 </style>
 <link rel="stylesheet" href="./arcade.css?v=mission-orbitale-1">
+<style>
+/* Mission 7 : les signes restent centrés entre les cases. */
+#game .decomp-parts {
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0,5.5rem) max-content) minmax(0,5.5rem);
+  align-items:center;
+  gap:clamp(4px,1.5vw,12px);
+  margin-inline:0;
+}
+#game .decomp-parts .smallin {
+  width:100%;
+  min-width:0;
+  height:clamp(44px,8vw,58px);
+}
+#game .decomp-parts > span {
+  display:grid;
+  place-items:center;
+  line-height:1;
+  font-size:clamp(1.15rem,3vw,1.65rem);
+}
+</style>
 </head><body>
 <canvas id="stars" aria-hidden="true"></canvas>
 <div class="wrap">
@@ -483,6 +504,7 @@ function norm(s){
 }
 function total(){
   if(mode==='eval') return 9;
+  if(mode==='mn4') return readingTasks.length;
   if(mode==='mn7') return 18;
   return 8;
 }function sk(){return mode==='eval'?evalSkills[i]:mode}
@@ -594,38 +616,17 @@ function mn3(){
     a:target.join(' – ')
   }
 }
-function canonWords(s){
-  let x=norm(s);
-  x=x.replace(/\s+et\s+/g,' ET ');
-  x=x.replace(/\s+/g,'-');
-  x=x.replace(/\s*-\s*/g,'-');
-  x=x.replace(/-ET-/g,' et ');
-  return x;
-}
+const readingTasks = [
+  {label:'six-cent-vingt', answer:620},
+  {label:'trois-cent-sept', answer:307},
+  {label:'neuf-cents', answer:900},
+  {label:'sept-cent-quarante-deux', answer:742},
+];
 function mn4(){
-  const tasks=[
-    {type:'toWords',n:235,answer:'deux-cent-trente-cinq'},
-    {type:'toWords',n:881,answer:'huit-cent-quatre-vingt-un'},
-    {type:'toWords',n:412,answer:'quatre-cent-douze'},
-    {type:'toDigits',label:'six-cent-vingt',answer:620},
-    {type:'toDigits',label:'trois-cent-sept',answer:307},
-    {type:'toDigits',label:'neuf-cents',answer:900},
-    {type:'toWords',n:574,answer:'cinq-cent-soixante-quatorze'},
-    {type:'toDigits',label:'sept-cent-quarante-deux',answer:742}
-  ];
-  const task=tasks[i % tasks.length];
-  if(task.type==='toWords'){
-    return{
-      t:'Écris ce nombre en lettres avec les traits d’union.',
-      h:`<div class="prompt">${task.n}</div>
-         <div class="center"><textarea id="a" class="answer wordsAnswer" rows="2" autocomplete="off" placeholder="Écris le nombre en lettres"></textarea></div>`,
-      c:()=>canonWords($('a').value)===canonWords(task.answer),
-      a:task.answer
-    };
-  }
-  return{
+  const task = readingTasks[i % readingTasks.length];
+  return {
     t:'Écris ce nombre en chiffres.',
-    h:`<div class="prompt">${task.label}</div>`+inp(),
+    h:'<div class="prompt">' + task.label + '</div>' + inp(),
     c:()=>+$('a').value===task.answer,
     a:task.answer
   };
@@ -634,12 +635,21 @@ function mn5(){
   const values=[342,431,800,610,1000,506,101,980];
   const n=values[i % values.length];
   const speak=()=>{
-    if(!('speechSynthesis' in window))return;
-    speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(String(n));
-    u.lang='fr-FR';
-    u.rate=.72;
-    speechSynthesis.speak(u);
+    const synth = window.speechSynthesis;
+    if (!synth || !window.SpeechSynthesisUtterance) return;
+    const voices = synth.getVoices().filter(voice => /^fr(?:-|$)/i.test(voice.lang));
+    const natural = /natural|naturel|neural|enhanced|premium|google|siri/i;
+    const france = voices.filter(voice => /^fr-FR$/i.test(voice.lang));
+    const voice = france.find(voice => natural.test(voice.name))
+      || voices.find(voice => natural.test(voice.name))
+      || france[0] || voices[0];
+    const words = n === 1000 ? 'mille' : fr(n).replace(/-/g, ' ');
+    const utterance = new SpeechSynthesisUtterance(words);
+    if (voice) utterance.voice = voice;
+    utterance.lang = voice?.lang || 'fr-FR';
+    utterance.rate = .9;
+    synth.cancel();
+    synth.speak(utterance);
   };
   return{
     t:'Écris le nombre que tu entends.',
@@ -647,7 +657,7 @@ function mn5(){
     s:()=>{
       const b=$('speakBtn');
       if(b)b.onclick=speak;
-      setTimeout(speak,250);
+      speak();
     },
     c:()=>+$('a').value===n,
     a:n
@@ -714,7 +724,7 @@ function mn7(){
     return{
       t:'Exercice 1 • Décompose le nombre en addition.',
       h:`<div class="prompt">${n}</div>
-         <div class="parts">
+         <div class="parts decomp-parts">
            <input class="smallin" id="p1" inputmode="numeric">
            <span>+</span>
            <input class="smallin" id="p2" inputmode="numeric">
