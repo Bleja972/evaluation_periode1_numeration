@@ -80,3 +80,64 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ffdc8c; outline-
 /* Le bouton de rangement porte une couleur héritée dans son attribut style. */
 #game .order button.chip { color: #ffe68a !important; }
 #game .answer::placeholder, #game .smallin::placeholder { color: #425771; opacity: 1; }
+
+/* Thème noir et jaune, avec des tailles adaptées à la largeur d’écran. */
+:root { --arcade-text: #ffe36e; }
+body { background: #000; color: var(--arcade-text); }
+.card, #game > .card { background: #0b0b0b; border-color: #41454d; }
+.parityCard { background: #101010; border-color: #4b4b4b; }
+
+h1, .brand, .muted, .skill strong, .skill span, .title,
+.badge, .successPct, .finalPct, .parityCard, .parityNumber,
+.parityExpr, #game .prompt, #game #skillName, #game .fritzHint {
+  color: var(--arcade-text);
+}
+#game :is(.fritzRealNum, .parityNumber, .mn8decomp) {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  font-variant-numeric: tabular-nums;
+}
+#game :is(.fritzNumBtn, .compareChoices .choice, .chip, .slot, .answer, .smallin, .sign) {
+  color: var(--arcade-text);
+  font-size: clamp(1.1rem, 3.6vw, 2.15rem);
+  font-variant-numeric: tabular-nums;
+}
+#game .wordsAnswer { font-size: clamp(1rem, 2.7vw, 1.5rem); }
+#game .order button.chip { color: var(--arcade-text) !important; }
+
+.skill, .btn, .speaker, .choice, .sign, .chip, .eraseBtn,
+.parityButtons button, .fritzNumBtn {
+  --button-light: #5acfff;
+  --button-top: #183f58;
+  --button-bottom: #101c31;
+  color: var(--arcade-text);
+  border: 1px solid var(--button-light);
+  background: linear-gradient(var(--button-top), var(--button-bottom));
+  box-shadow: inset 0 1px 2px #ffffff24, 0 3px 0 #070707,
+    0 0 8px color-mix(in srgb, var(--button-light) 33%, transparent);
+}
+.skill:nth-child(3n+2) { --button-light: #bd8dff; --button-top: #3c265a; --button-bottom: #211631; }
+.skill:nth-child(3n), .btn.green { --button-light: #60e4b3; --button-top: #1b483e; --button-bottom: #10241f; }
+.skill.eval, .btn.orange, .speaker { --button-light: #ffb458; --button-top: #503117; --button-bottom: #281e14; }
+#game :is(.answer, .smallin, .slot), #game .parityButtons button.selected {
+  background: #1c1c1c !important;
+  color: var(--arcade-text) !important;
+  border-color: #a38644 !important;
+}
+#game .answer::placeholder, #game .smallin::placeholder { color: #d5bf76; }
+
+@media (max-width: 720px) {
+  #game :is(.order, .seq) {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-x: visible;
+  }
+  #game :is(.compareChoices .choice, .fritzNumBtn) {
+    min-width: 0;
+    padding-inline: .5em;
+  }
+  #game :is(.chip, .slot, .smallin) {
+    min-width: 0;
+    width: clamp(3rem, 16vw, 4.25rem);
+    max-width: 100%;
+  }
+}
