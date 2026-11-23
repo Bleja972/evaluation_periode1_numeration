@@ -399,7 +399,9 @@ h1{font-size:clamp(1.35rem,3vw,1.8rem);line-height:1.2}
   text-align:center;
 }
 
-</style></head><body>
+</style>
+<link rel="stylesheet" href="./arcade.css?v=blocs-3d-1">
+</head><body>
 <nav id="ce1-blog-navigation" aria-label="Tous les jeux" style="position:relative;z-index:1000;display:flex;justify-content:center;padding:10px 14px;background:#173f30"><a href="https://bleja972.github.io/" target="_top" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:12px;background:#fff6cf;color:#173f30;font:700 17px/1.3 system-ui,sans-serif;text-decoration:none;min-height:46px;box-shadow:0 2px 5px #0002">🏠 Voir tous les jeux</a></nav>
 <div class="app">
 <section id="menu"><div class="card"><div class="brand">Les Petits Défis CE1</div><h1>Je revois les nombres jusqu'à 1000</h1><div class="muted">Les nombres jusqu'à 1 000 — 8 exercices par compétence. Le jeu s'adapte automatiquement à l'ordinateur, la tablette et le smartphone.</div></div>
@@ -418,7 +420,7 @@ h1{font-size:clamp(1.35rem,3vw,1.8rem);line-height:1.2}
 
 <section id="game" class="hidden">
 <div class="card"><div class="top"><div><div class="brand">Entraînement CE1</div><b id="skillName"></b></div><div class="badges"><div class="badge" id="count"></div><div class="badge" id="score"></div></div></div><div class="progress"><div id="prog"></div></div></div>
-<div class="card game"><div class="title" id="exTitle"></div><div id="ex"></div><div class="feedback" id="fb"></div><div class="actions"><button class="btn orange" id="check">Vérifier</button><button class="btn green hidden" id="next">Suivant</button><button class="btn navy" id="back">Menu</button></div></div>
+<div class="card game"><div class="title" id="exTitle"></div><div id="ex"></div><div class="feedback" id="fb" role="status" aria-live="polite"></div><div class="actions"><button class="btn orange" id="check">Vérifier</button><button class="btn green hidden" id="next">Suivant</button><button class="btn navy" id="back">Menu</button></div></div>
 </section></div>
 <script>
 (()=>{
@@ -470,9 +472,11 @@ function total(){
 function inp(id='a',ph='Ta réponse'){return `<div class="center"><input id="${id}" class="answer" autocomplete="off" placeholder="${ph}"></div>`}
 function chooseSetup(){document.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-v]').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');current.sel=b.dataset.v})}
 function matGroup(cls,count){
-  if(count<=0)return '';
-  if(count<=5)return `<div class="remainder-group">${`<div class="${cls}"></div>`.repeat(count)}</div>`;
-  return `<div class="five-group">${`<div class="${cls}"></div>`.repeat(5)}</div><div class="remainder-group">${`<div class="${cls}"></div>`.repeat(count-5)}</div>`;
+  if (count <= 0) return '';
+  const labels = { block100: 'Plaque de 100', block10: 'Barre de 10', block1: 'Cube unité' };
+  const block = `<span class="${cls}" role="img" aria-label="${labels[cls]}"></span>`;
+  if (count <= 5) return `<div class="remainder-group">${block.repeat(count)}</div>`;
+  return `<div class="five-group">${block.repeat(5)}</div><div class="remainder-group">${block.repeat(count-5)}</div>`;
 }
 function mn1(){
   const values=[215,310,153,300,251,305,531,150];
@@ -738,7 +742,7 @@ function parityModel(n){
 function pairUnitRows(n){
   const top=Math.ceil(n/2);
   const bottom=Math.floor(n/2);
-  const row=(count)=>`<div class="unitRow">${'<span class="unitSquare"></span>'.repeat(count)}</div>`;
+  const row=(count)=>`<div class="unitRow">${'<span class="unitSquare" role="img" aria-label="Cube unité"></span>'.repeat(count)}</div>`;
   return `<div class="pairModel">
     ${row(top)}
     ${row(bottom)}
@@ -775,7 +779,12 @@ function mn8(){
 }
 function mn9(){let step=[2,3,5,10][rnd(0,3)],start=rnd(100,700),vals=Array.from({length:8},(_,k)=>start+k*step),bl=[0,3,4,7];return{t:'Observe la suite et complète.',h:`<div class="seq">${vals.map((v,k)=>bl.includes(k)?`<input class="smallin" data-a="${v}" inputmode="numeric">`:`<div class="slot">${v}</div>`).join('')}</div>`,c:()=>[...document.querySelectorAll('[data-a]')].every(x=>+x.value===+x.dataset.a),a:bl.map(k=>vals[k]).join(', ')}}
 const gen={mn1,mn2,mn3,mn4,mn5,mn6,mn7,mn8,mn9};
-function render(){let s=sk();current=gen[s]();$('skillName').textContent=mode==='eval'?'🏆 Parcours complet':names[s];$('exTitle').textContent=current.t;$('ex').innerHTML=current.h;$('fb').textContent='';$('count').textContent=`Exercice ${i+1} / ${total()}`;$('score').textContent=`Score : ${score}`;$('prog').style.width=`${i/total()*100}%`;$('check').classList.remove('hidden');$('next').classList.add('hidden');if(current.s)current.s();let f=document.querySelector('#ex input');if(f)setTimeout(()=>f.focus(),50)}
+function animate(element, className) {
+  element.classList.remove(className);
+  void element.offsetWidth;
+  element.classList.add(className);
+}
+function render(){let s=sk();current=gen[s]();$('skillName').textContent=mode==='eval'?'🏆 Parcours complet':names[s];$('exTitle').textContent=current.t;$('ex').innerHTML=current.h;animate($('ex'),'arcade-question');$('fb').classList.remove('arcade-correct','arcade-incorrect');$('fb').textContent='';$('count').textContent=`Exercice ${i+1} / ${total()}`;$('score').textContent=`Score : ${score}`;$('prog').style.width=`${i/total()*100}%`;$('check').classList.remove('hidden');$('next').classList.add('hidden');if(current.s)current.s();let f=document.querySelector('#ex input');if(f)setTimeout(()=>f.focus(),50)}
 function start(s){mode=s;i=0;score=0;evalSkills=['mn1','mn2','mn3','mn4','mn5','mn6','mn7','mn8','mn9'].sort(()=>Math.random()-.5);$('menu').classList.add('hidden');$('game').classList.remove('hidden');render()}
 document.querySelectorAll('.skill').forEach(b=>b.onclick=()=>start(b.dataset.s));
 $('check').onclick=()=>{
@@ -786,6 +795,7 @@ $('check').onclick=()=>{
   $('fb').innerHTML=ok
     ? `<span class="good">Bravo !</span><span class="successPct">Réussite : ${pct} %</span>`
     : `<span class="bad">Réponse attendue : ${current.a}</span><span class="successPct">Réussite : ${pct} %</span>`;
+  animate($('fb'), ok ? 'arcade-correct' : 'arcade-incorrect');
   $('score').textContent=`Score : ${score}`;
   $('check').classList.add('hidden');
   $('next').classList.remove('hidden');
