@@ -111,3 +111,26 @@ body::after{background:repeating-linear-gradient(transparent 0px,transparent 5px
 .layout > .menu { display:block; margin-top:0; }
 #game .actions { display:flex; }
 #game .hud-box strong { font-size:clamp(1rem,3.5vw,1.44rem); }
+
+/* Validation positive : une brève impulsion verte sur la réponse. */
+#game:has(#fb .good) #ex :is(input, textarea, button.selected, .slot),
+#game #fb .good {
+  color: #a3ffd1 !important;
+  border-color: #6bffbe !important;
+  box-shadow: 0 0 7px #6bffbe55;
+  animation: correct-neon .52s ease-in-out 2;
+}
+#game #fb .good {
+  display: inline-block;
+  padding: .15em .45em;
+  border-radius: .4em;
+  text-shadow: 0 0 6px #6bffbe75;
+}
+@keyframes correct-neon {
+  0%, 100% { box-shadow: 0 0 4px #6bffbe38; }
+  50% { box-shadow: 0 0 12px #6bffbe9c; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #game:has(#fb .good) #ex :is(input, textarea, button.selected, .slot),
+  #game #fb .good { animation: none !important; }
+}
