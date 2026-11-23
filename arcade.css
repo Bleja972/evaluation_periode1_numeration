@@ -72,3 +72,11 @@ button:focus-visible, input:focus-visible { outline: 3px solid #ffdc8c; outline-
 @media (max-width: 420px) {
   .pairModel .unitSquare { width: min(4.5vw, 16px); }
 }
+
+/* Les chiffres et les consignes se détachent des panneaux sombres. */
+#game .prompt, #game #skillName, #game .fritzHint { color: #f5f8ff; }
+#game .fritzRealNum, #game .compareChoices .choice,
+#game .fritzNumBtn, #game .mn8decomp { color: #ffe68a; }
+/* Le bouton de rangement porte une couleur héritée dans son attribut style. */
+#game .order button.chip { color: #ffe68a !important; }
+#game .answer::placeholder, #game .smallin::placeholder { color: #425771; opacity: 1; }
