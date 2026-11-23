@@ -141,3 +141,12 @@ h1, .brand, .muted, .skill strong, .skill span, .title,
     max-width: 100%;
   }
 }
+
+.skill.eval, .skill:nth-child(n).eval {
+  background: linear-gradient(var(--button-top), var(--button-bottom));
+  border-color: var(--button-light);
+}
+#game button.selected {
+  background: #33280e !important;
+  border-color: #ffe36e !important;
+}
