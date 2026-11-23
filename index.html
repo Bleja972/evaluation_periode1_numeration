@@ -400,28 +400,45 @@ h1{font-size:clamp(1.35rem,3vw,1.8rem);line-height:1.2}
 }
 
 </style>
-<link rel="stylesheet" href="./arcade.css?v=blocs-3d-1">
+<link rel="stylesheet" href="./arcade.css?v=mission-orbitale-1">
 </head><body>
-<nav id="ce1-blog-navigation" aria-label="Tous les jeux" style="position:relative;z-index:1000;display:flex;justify-content:center;padding:10px 14px;background:#173f30"><a href="https://bleja972.github.io/" target="_top" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:12px;background:#fff6cf;color:#173f30;font:700 17px/1.3 system-ui,sans-serif;text-decoration:none;min-height:46px;box-shadow:0 2px 5px #0002">🏠 Voir tous les jeux</a></nav>
-<div class="app">
-<section id="menu"><div class="card"><div class="brand">Les Petits Défis CE1</div><h1>Je revois les nombres jusqu'à 1000</h1><div class="muted">Les nombres jusqu'à 1 000 — 8 exercices par compétence. Le jeu s'adapte automatiquement à l'ordinateur, la tablette et le smartphone.</div></div>
-<div class="menu">
-<button class="skill" data-s="mn1"><strong>Dénombrer</strong></button>
-<button class="skill" data-s="mn2"><strong>Comparer</strong></button>
-<button class="skill" data-s="mn3"><strong>Ranger</strong></button>
-<button class="skill" data-s="mn4"><strong>Lire / écrire</strong></button>
-<button class="skill" data-s="mn5"><strong>Dictée</strong></button>
-<button class="skill" data-s="mn6"><strong>Compter</strong></button>
-<button class="skill" data-s="mn7"><strong>Composer / décomposer</strong></button>
-<button class="skill" data-s="mn8"><strong>Pair / impair</strong></button>
-<button class="skill" data-s="mn9"><strong>Suites</strong></button>
-<button class="skill eval" data-s="eval"><strong>🏆 Parcours complet</strong><span>1 exercice de chacune des 9 compétences.</span></button>
-</div></section>
-
-<section id="game" class="hidden">
-<div class="card"><div class="top"><div><div class="brand">Entraînement CE1</div><b id="skillName"></b></div><div class="badges"><div class="badge" id="count"></div><div class="badge" id="score"></div></div></div><div class="progress"><div id="prog"></div></div></div>
-<div class="card game"><div class="title" id="exTitle"></div><div id="ex"></div><div class="feedback" id="fb" role="status" aria-live="polite"></div><div class="actions"><button class="btn orange" id="check">Vérifier</button><button class="btn green hidden" id="next">Suivant</button><button class="btn navy" id="back">Menu</button></div></div>
-</section></div>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="wrap">
+<header class="mast"><div class="mastbar"><div class="masttext">
+<span class="eyebrow">LABORATOIRE ORBITAL · CE1 · NUMÉRATION</span>
+<h1>MISSION <em>NUMÉRATION</em></h1>
+<p>Je revois les nombres jusqu’à 1 000 · 9 compétences · Parcours complet</p>
+</div><a class="status-pill" href="https://bleja972.github.io/" target="_top"><i></i> Tous les jeux</a></div></header>
+<div class="layout">
+<aside id="menu" class="menu" aria-label="Choix de la mission">
+<h2>Choisir la mission</h2><div class="seq-list">
+<button type="button" class="skill seq-btn" data-s="mn1" aria-pressed="false"><span class="seq-num">01</span><span class="seq-title"><small>Compétence 1</small>Dénombrer</span></button>
+<button type="button" class="skill seq-btn" data-s="mn2" aria-pressed="false"><span class="seq-num">02</span><span class="seq-title"><small>Compétence 2</small>Comparer</span></button>
+<button type="button" class="skill seq-btn" data-s="mn3" aria-pressed="false"><span class="seq-num">03</span><span class="seq-title"><small>Compétence 3</small>Ranger</span></button>
+<button type="button" class="skill seq-btn" data-s="mn4" aria-pressed="false"><span class="seq-num">04</span><span class="seq-title"><small>Compétence 4</small>Lire / écrire</span></button>
+<button type="button" class="skill seq-btn" data-s="mn5" aria-pressed="false"><span class="seq-num">05</span><span class="seq-title"><small>Compétence 5</small>Dictée</span></button>
+<button type="button" class="skill seq-btn" data-s="mn6" aria-pressed="false"><span class="seq-num">06</span><span class="seq-title"><small>Compétence 6</small>Compter</span></button>
+<button type="button" class="skill seq-btn" data-s="mn7" aria-pressed="false"><span class="seq-num">07</span><span class="seq-title"><small>Compétence 7</small>Composer / décomposer</span></button>
+<button type="button" class="skill seq-btn" data-s="mn8" aria-pressed="false"><span class="seq-num">08</span><span class="seq-title"><small>Compétence 8</small>Pair / impair</span></button>
+<button type="button" class="skill seq-btn" data-s="mn9" aria-pressed="false"><span class="seq-num">09</span><span class="seq-title"><small>Compétence 9</small>Suites</span></button>
+<button type="button" class="skill seq-btn" data-s="eval" aria-pressed="false"><span class="seq-num">10</span><span class="seq-title"><small>Parcours</small>🏆 Parcours complet</span></button>
+</div></aside>
+<main id="game" class="arena">
+<div class="arena-head"><div class="arena-top"><div>
+<h2 id="skillName" tabindex="-1"></h2><p class="sub">Entraînement de numération · CE1</p>
+</div><button class="btn ghost" id="sound" aria-pressed="true" type="button">♫ Sons : ON</button></div>
+<div class="hud">
+<div class="hud-box"><span>Compétence</span><strong id="skillCounter"></strong></div>
+<div class="hud-box"><span>Exercice</span><strong id="count"></strong></div>
+<div class="hud-box timer"><span>Chronomètre</span><strong>LIBRE</strong></div>
+<div class="hud-box"><span>Réponses justes</span><strong id="score"></strong></div>
+</div><div class="progressrail"><div class="progressbar" id="prog"></div></div></div>
+<div class="panel">
+<div class="mission" id="exTitle"></div><div class="problem" id="ex"></div>
+<div class="feedback" id="fb" role="status" aria-live="polite"></div>
+<div class="actions"><button class="btn primary" id="check" type="button">✓ Vérifier</button><button class="btn orange hidden" id="next" type="button">Suivant →</button><button class="btn ghost" id="back" type="button">Choisir la mission</button></div>
+</div>
+</main></div></div>
 <script>
 (()=>{
 const $=x=>document.getElementById(x), rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
@@ -779,14 +796,24 @@ function mn8(){
 }
 function mn9(){let step=[2,3,5,10][rnd(0,3)],start=rnd(100,700),vals=Array.from({length:8},(_,k)=>start+k*step),bl=[0,3,4,7];return{t:'Observe la suite et complète.',h:`<div class="seq">${vals.map((v,k)=>bl.includes(k)?`<input class="smallin" data-a="${v}" inputmode="numeric">`:`<div class="slot">${v}</div>`).join('')}</div>`,c:()=>[...document.querySelectorAll('[data-a]')].every(x=>+x.value===+x.dataset.a),a:bl.map(k=>vals[k]).join(', ')}}
 const gen={mn1,mn2,mn3,mn4,mn5,mn6,mn7,mn8,mn9};
-function animate(element, className) {
-  element.classList.remove(className);
-  void element.offsetWidth;
-  element.classList.add(className);
-}
-function render(){let s=sk();current=gen[s]();$('skillName').textContent=mode==='eval'?'🏆 Parcours complet':names[s];$('exTitle').textContent=current.t;$('ex').innerHTML=current.h;animate($('ex'),'arcade-question');$('fb').classList.remove('arcade-correct','arcade-incorrect');$('fb').textContent='';$('count').textContent=`Exercice ${i+1} / ${total()}`;$('score').textContent=`Score : ${score}`;$('prog').style.width=`${i/total()*100}%`;$('check').classList.remove('hidden');$('next').classList.add('hidden');if(current.s)current.s();let f=document.querySelector('#ex input');if(f)setTimeout(()=>f.focus(),50)}
-function start(s){mode=s;i=0;score=0;evalSkills=['mn1','mn2','mn3','mn4','mn5','mn6','mn7','mn8','mn9'].sort(()=>Math.random()-.5);$('menu').classList.add('hidden');$('game').classList.remove('hidden');render()}
-document.querySelectorAll('.skill').forEach(b=>b.onclick=()=>start(b.dataset.s));
+const missions = [...document.querySelectorAll('.seq-btn')];
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+function render(){let s=sk();
+  $('skillCounter').textContent = s.slice(-1).padStart(2,'0') + ' / 09';
+  for (const button of missions) {
+    const active = button.dataset.s === mode;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', String(active));
+  }
+current=gen[s]();$('skillName').textContent=mode==='eval'?'🏆 Parcours complet':names[s].substring(6);$('exTitle').textContent=current.t;$('ex').innerHTML=current.h;$('fb').classList.remove('arcade-correct','arcade-incorrect');$('fb').textContent='';$('count').textContent=`Exercice ${i+1} / ${total()}`;$('score').textContent=`Score : ${score}`;$('prog').style.width=`${i/total()*100}%`;$('check').classList.remove('hidden');$('next').classList.add('hidden');if(current.s)current.s();let f=document.querySelector('#ex input');if(f && document.activeElement !== document.body)setTimeout(()=>f.focus({preventScroll:true}),50)}
+function start(s){mode=s;i=0;score=0;evalSkills=['mn1','mn2','mn3','mn4','mn5','mn6','mn7','mn8','mn9'].sort(()=>Math.random()-.5);render()}
+for (const button of missions) button.onclick = () => {
+  window.speechSynthesis?.cancel();
+  start(button.dataset.s);
+  sound('tap');
+  $('skillName').focus({ preventScroll: true });
+  $('game').scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start' });
+};
 $('check').onclick=()=>{
   let ok=current.c();
   if(ok)score++;
@@ -795,7 +822,7 @@ $('check').onclick=()=>{
   $('fb').innerHTML=ok
     ? `<span class="good">Bravo !</span><span class="successPct">Réussite : ${pct} %</span>`
     : `<span class="bad">Réponse attendue : ${current.a}</span><span class="successPct">Réussite : ${pct} %</span>`;
-  animate($('fb'), ok ? 'arcade-correct' : 'arcade-incorrect');
+  sound(ok ? 'good' : 'bad');
   $('score').textContent=`Score : ${score}`;
   $('check').classList.add('hidden');
   $('next').classList.remove('hidden');
@@ -815,6 +842,17 @@ $('next').onclick=()=>{
     $('next').classList.add('hidden');
   }
 };
-$('back').onclick=()=>{if(window.speechSynthesis)speechSynthesis.cancel();$('game').classList.add('hidden');$('menu').classList.remove('hidden')};
+$('back').onclick = () => {
+  window.speechSynthesis?.cancel();
+  document.querySelector('.seq-btn.active')?.focus();
+  $('menu').scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start' });
+};
+let audioCtx, muted = false;
+function audioStart(){if(muted)return null;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}catch{return null}}
+function beep(freq,dur,type='sine',gain=.07,delay=0,slide=0){const a=audioStart();if(!a)return;const t=a.currentTime+delay,o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.setValueAtTime(freq,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(35,freq+slide),t+dur);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(gain,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g).connect(a.destination);o.start(t);o.stop(t+dur+.02)}
+function sound(kind){if(kind==='good'){beep(490,.12,'triangle',.055);beep(740,.14,'sine',.065,.105);beep(988,.2,'triangle',.055,.22)}else if(kind==='bad'){beep(235,.16,'sawtooth',.035,0,-105);beep(140,.2,'triangle',.043,.14,-60)}else if(kind==='end'){[440,587,740,988].forEach((f,i)=>beep(f,.15,'triangle',.065,i*.105))}else beep(360,.08,'sine',.033,0,105)}
+$('sound').onclick=()=>{muted=!muted;$('sound').textContent=muted?'♫ Sons : OFF':'♫ Sons : ON';$('sound').setAttribute('aria-pressed',String(!muted));if(!muted)sound('tap')};
+const canvas=$('stars'),ctx=canvas.getContext('2d');if(ctx&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){let stars=[],w=0,h=0;function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;stars=Array.from({length:Math.min(95,Math.max(25,Math.floor(w*h/11000)))},()=>({x:Math.random()*w,y:Math.random()*h,r:.4+Math.random()*1.25,s:.15+Math.random()*.45,p:Math.random()*6.28}))}window.addEventListener('resize',resize,{passive:true});resize();function draw(now){ctx.clearRect(0,0,w,h);stars.forEach(s=>{s.y+=s.s;if(s.y>h+3)s.y=-3;const alpha=.18+.35*(1+Math.sin(now*.001+s.p))/2;ctx.fillStyle=`rgba(118,232,255,${alpha})`;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill()});requestAnimationFrame(draw)}requestAnimationFrame(draw)}
+start('mn1');
 })();
 </script></body><script src="https://bleja972.github.io/assets/jeux-conseilles.js?v=1" data-recommendations='{"selector":"#exTitle","match":"Parcours terminé","games":[{"title":"Décomposer un nombre","url":"https://bleja972.github.io/decompose/"},{"title":"Recomposer un nombre","url":"https://bleja972.github.io/recompose/"}],"questions":false}'></script></html>
