@@ -407,7 +407,7 @@ h1{font-size:clamp(1.35rem,3vw,1.8rem);line-height:1.2}
 <header class="mast"><div class="mastbar"><div class="masttext">
 <span class="eyebrow">LABORATOIRE ORBITAL · CE1 · NUMÉRATION</span>
 <h1>MISSION <em>NUMÉRATION</em></h1>
-<p>Je revois les nombres jusqu’à 1 000 · 9 compétences · Parcours complet</p>
+<p>Je revois les nombres jusqu’à 1 000 · 8 compétences · Parcours complet</p>
 </div><a class="status-pill" href="https://bleja972.github.io/" target="_top"><i></i> Tous les jeux</a></div></header>
 <div class="layout">
 <aside id="menu" class="menu" aria-label="Choix de la mission">
@@ -416,12 +416,11 @@ h1{font-size:clamp(1.35rem,3vw,1.8rem);line-height:1.2}
 <button type="button" class="skill seq-btn" data-s="mn2" aria-pressed="false"><span class="seq-num">02</span><span class="seq-title"><small>Compétence 2</small>Comparer</span></button>
 <button type="button" class="skill seq-btn" data-s="mn3" aria-pressed="false"><span class="seq-num">03</span><span class="seq-title"><small>Compétence 3</small>Ranger</span></button>
 <button type="button" class="skill seq-btn" data-s="mn4" aria-pressed="false"><span class="seq-num">04</span><span class="seq-title"><small>Compétence 4</small>Lire / écrire</span></button>
-<button type="button" class="skill seq-btn" data-s="mn5" aria-pressed="false"><span class="seq-num">05</span><span class="seq-title"><small>Compétence 5</small>Dictée</span></button>
-<button type="button" class="skill seq-btn" data-s="mn6" aria-pressed="false"><span class="seq-num">06</span><span class="seq-title"><small>Compétence 6</small>Compter</span></button>
-<button type="button" class="skill seq-btn" data-s="mn7" aria-pressed="false"><span class="seq-num">07</span><span class="seq-title"><small>Compétence 7</small>Composer / décomposer</span></button>
-<button type="button" class="skill seq-btn" data-s="mn8" aria-pressed="false"><span class="seq-num">08</span><span class="seq-title"><small>Compétence 8</small>Pair / impair</span></button>
-<button type="button" class="skill seq-btn" data-s="mn9" aria-pressed="false"><span class="seq-num">09</span><span class="seq-title"><small>Compétence 9</small>Suites</span></button>
-<button type="button" class="skill seq-btn" data-s="eval" aria-pressed="false"><span class="seq-num">10</span><span class="seq-title"><small>Parcours</small>🏆 Parcours complet</span></button>
+<button type="button" class="skill seq-btn" data-s="mn6" aria-pressed="false"><span class="seq-num">05</span><span class="seq-title"><small>Compétence 5</small>Compter</span></button>
+<button type="button" class="skill seq-btn" data-s="mn7" aria-pressed="false"><span class="seq-num">06</span><span class="seq-title"><small>Compétence 6</small>Composer / décomposer</span></button>
+<button type="button" class="skill seq-btn" data-s="mn8" aria-pressed="false"><span class="seq-num">07</span><span class="seq-title"><small>Compétence 7</small>Pair / impair</span></button>
+<button type="button" class="skill seq-btn" data-s="mn9" aria-pressed="false"><span class="seq-num">08</span><span class="seq-title"><small>Compétence 8</small>Suites</span></button>
+<button type="button" class="skill seq-btn" data-s="eval" aria-pressed="false"><span class="seq-num">09</span><span class="seq-title"><small>Parcours</small>🏆 Parcours complet</span></button>
 </div></aside>
 <main id="game" class="arena">
 <div class="arena-head"><div class="arena-top"><div>
@@ -443,7 +442,7 @@ h1{font-size:clamp(1.35rem,3vw,1.8rem);line-height:1.2}
 (()=>{
 const $=x=>document.getElementById(x), rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 let mode='mn1',i=0,score=0,current=null,evalSkills=[];
-const names={mn1:'MN1 • Dénombrer',mn2:'MN2 • Comparer',mn3:'MN3 • Ranger',mn4:'MN4 • Lire / écrire',mn5:'MN5 • Dictée',mn6:'MN6 • Compter',mn7:'MN7 • Composer / décomposer',mn8:'MN8 • Pair / impair',mn9:'MN9 • Suites'};
+const names={mn1:'MN1 • Dénombrer',mn2:'MN2 • Comparer',mn3:'MN3 • Ranger',mn4:'MN4 • Lire / écrire',mn6:'MN6 • Compter',mn7:'MN7 • Composer / décomposer',mn8:'MN8 • Pair / impair',mn9:'MN9 • Suites'};
 const one=['zéro','un','deux','trois','quatre','cinq','six','sept','huit','neuf','dix','onze','douze','treize','quatorze','quinze','seize'];
 function two(n){
   if(n<17)return one[n];
@@ -482,7 +481,7 @@ function norm(s){
     .trim();
 }
 function total(){
-  if(mode==='eval') return 9;
+  if(mode==='eval') return evalSkills.length;
   if(mode==='mn7') return 18;
   return 8;
 }function sk(){return mode==='eval'?evalSkills[i]:mode}
@@ -630,29 +629,6 @@ function mn4(){
     a:task.answer
   };
 }
-function mn5(){
-  const values=[342,431,800,610,1000,506,101,980];
-  const n=values[i % values.length];
-  const speak=()=>{
-    if(!('speechSynthesis' in window))return;
-    speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(String(n));
-    u.lang='fr-FR';
-    u.rate=.72;
-    speechSynthesis.speak(u);
-  };
-  return{
-    t:'Écris le nombre que tu entends.',
-    h:`<div class="center"><button class="speaker" id="speakBtn" type="button" aria-label="Écouter le nombre">🔊</button></div>${inp()}`,
-    s:()=>{
-      const b=$('speakBtn');
-      if(b)b.onclick=speak;
-      setTimeout(speak,250);
-    },
-    c:()=>+$('a').value===n,
-    a:n
-  }
-}
 function mn6(){
   const series=[
     // Séries du PDF
@@ -795,18 +771,18 @@ function mn8(){
   }
 }
 function mn9(){let step=[2,3,5,10][rnd(0,3)],start=rnd(100,700),vals=Array.from({length:8},(_,k)=>start+k*step),bl=[0,3,4,7];return{t:'Observe la suite et complète.',h:`<div class="seq">${vals.map((v,k)=>bl.includes(k)?`<input class="smallin" data-a="${v}" inputmode="numeric">`:`<div class="slot">${v}</div>`).join('')}</div>`,c:()=>[...document.querySelectorAll('[data-a]')].every(x=>+x.value===+x.dataset.a),a:bl.map(k=>vals[k]).join(', ')}}
-const gen={mn1,mn2,mn3,mn4,mn5,mn6,mn7,mn8,mn9};
+const gen={mn1,mn2,mn3,mn4,mn6,mn7,mn8,mn9};
 const missions = [...document.querySelectorAll('.seq-btn')];
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 function render(){let s=sk();
-  $('skillCounter').textContent = s.slice(-1).padStart(2,'0') + ' / 09';
+  $('skillCounter').textContent = String(Object.keys(gen).indexOf(s) + 1).padStart(2,'0') + ' / ' + String(Object.keys(gen).length).padStart(2,'0');
   for (const button of missions) {
     const active = button.dataset.s === mode;
     button.classList.toggle('active', active);
     button.setAttribute('aria-pressed', String(active));
   }
 current=gen[s]();$('skillName').textContent=mode==='eval'?'🏆 Parcours complet':names[s].substring(6);$('exTitle').textContent=current.t;$('ex').innerHTML=current.h;$('fb').classList.remove('arcade-correct','arcade-incorrect');$('fb').textContent='';$('count').textContent=`Exercice ${i+1} / ${total()}`;$('score').textContent=`Score : ${score}`;$('prog').style.width=`${i/total()*100}%`;$('check').classList.remove('hidden');$('next').classList.add('hidden');if(current.s)current.s();let f=document.querySelector('#ex input');if(f && document.activeElement !== document.body)setTimeout(()=>f.focus({preventScroll:true}),50)}
-function start(s){mode=s;i=0;score=0;evalSkills=['mn1','mn2','mn3','mn4','mn5','mn6','mn7','mn8','mn9'].sort(()=>Math.random()-.5);render()}
+function start(s){mode=s;i=0;score=0;evalSkills=Object.keys(gen).sort(()=>Math.random()-.5);render()}
 for (const button of missions) button.onclick = () => {
   window.speechSynthesis?.cancel();
   start(button.dataset.s);
